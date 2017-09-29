@@ -23,109 +23,13 @@ Assistance Received: none
 ********************************************************************* */
 Player::Player()
 {
+	// set private variables to default values
+	player_move = false;
 	score = 0;
 	a_hand = new Hand;
-	passed_last_move = false;
+	a_temp = new Hand;
+	total = 0;
 }
-
-/************************************************************************
-Function Name: get_hand
-Purpose: To return the hand
-Parameters: none
-Return Value: players hand
-Algorithm: 
-1) Return hand
-Assistance Received: none
-**********************************************************************/
-Hand* Player::get_hand() { return a_hand; }
-
-/* *********************************************************************
-Function Name: add_to_score
-Purpose: To add to player score
-Parameters:
-num, an int to add onto it
-Return Value: void
-Local Variables:
-score, the player score
-Algorithm:
-1) Add num to score
-Assistance Received: none
-********************************************************************* */
-void Player::add_to_score(int num) { score += num; }
-
-/* *********************************************************************
-Function Name: get_hand_size
-Purpose: to return the size of the hand
-Parameters:
-none
-Return Value: the int size of the hand
-Local Variables:
-none
-Algorithm:
-1) Return the size of the hand
-Assistance Received: none
-********************************************************************* */
-int Player::get_hand_size(Hand* the_hand) { return the_hand->size(*the_hand->get_hand()); }
-
-/* *********************************************************************
-Function Name: get_score
-Purpose: To return the score
-Parameters:
-none
-Return Value: The player score as an int
-Local Variables:
-score an int representing player score
-Algorithm:
-1) Return score
-Assistance Received: none
-********************************************************************* */
-int Player::get_score() { return score; }
-
-/* *********************************************************************
-Function Name: set_passed
-Purpose: To set passed_last_move
-Parameters:
-pass, the boolean to set passed_last_move to
-Return Value: Void
-Local Variables:
-passed_last_move
-Algorithm:
-1) Set passed_last_move to pass
-Assistance Received: none
-********************************************************************* */
-void Player::set_passed(bool pass) { passed_last_move = pass; }
-
-/* *********************************************************************
-Function Name: get_passed
-Purpose: To return passed_last_move
-Parameters:
-none
-Return Value: bool, passed_last_move
-Local Variables:
-none
-Algorithm:
-1) Return passed_last_move
-Assistance Received: none
-********************************************************************* */
-bool Player::get_passed() { return passed_last_move; }
-
-/* *********************************************************************
-Function Name: fill_hand
-Purpose: To call a_hand function fill hand
-Parameters:
-stack of tiles named pile
-Return Value: void
-Local Variables:
-a_hand
-Algorithm:
-1) call the hand's fill hand and pass it the pile
-Assistance Received: none
-********************************************************************* */
-void Player::fill_hand(stack<Tile> pile) { a_hand->fill_hand(pile); }
-
-void Player::set_player_move(bool move) { player_move = move; }
-
-bool Player::get_player_move() { return player_move; }
 
 /* *********************************************************************
 Function Name: has_tile
@@ -150,6 +54,20 @@ bool Player::has_tile(Tile center) {
 	return false;
 }
 
+/* *********************************************************************
+Function Name: remove_tile
+Purpose: to remove a tile from the players hand
+Parameters:
+Tile named a_tile
+Return Value: none
+Local Variables:
+a_temp and a_hand which are both hands
+Algorithm:
+1.	loop thorugh the hand until we get to the tile
+2.	then push in the next one tiles until we have a full hand without
+	the original Tile
+Assistance Received: none
+********************************************************************* */
 void Player::remove_tile(Tile a_tile) {
 	a_temp = new Hand;
 	while (a_hand->size(*a_hand->get_hand()) != 0) {
@@ -166,15 +84,56 @@ void Player::remove_tile(Tile a_tile) {
 		}
 		a_hand->get_hand()->push_back(a_temp->at(i));
 	}
-	
+	while (!a_temp->get_hand()->empty()) { a_temp->get_hand()->pop_back(); }
+	while (a_hand->get_hand()->size() != 0) {
+		a_temp->get_hand()->push_back(a_hand->get_hand()->back());
+		a_hand->get_hand()->pop_back();
+	}
+	for (int i = 0; i < a_temp->get_hand()->size(); i++) {
+		a_hand->get_hand()->push_back(a_temp->at(i));
+	}
+	while (!a_temp->get_hand()->empty()) { a_temp->get_hand()->pop_back(); }
 	a_temp->~Hand();
 	delete a_temp;
 }
 
+/* *********************************************************************
+Function Name: make_a_num
+Purpose: to add the total pips in the players hand
+Parameters:
+none
+Return Value: int
+Local Variables:
+total, an int
+and a_hand a hand
+Algorithm:
+1.	loop thorugh the hand totalling up the pips
+2.	return the total
+Assistance Received: none
+********************************************************************* */
 int Player::make_a_num() {
 	total = 0;
 	for (int i = 0; i < get_hand_size(a_hand); i++) {
 		total += a_hand->at(i).get_side_left() + a_hand->at(i).get_side_right();
 	}
 	return total;
+}
+
+/* *********************************************************************
+Function Name: ~Player
+Purpose: destructor for the Player class
+Parameters:
+none
+Return Value: none
+Local Variables:
+a_temp and a_hand which are both hands
+Algorithm:
+call the hand destructor for both variables and delete them both
+Assistance Received: none
+********************************************************************* */
+Player::~Player() {
+	a_hand->~Hand();
+	a_temp->~Hand();
+	delete a_hand;
+	delete a_temp;
 }

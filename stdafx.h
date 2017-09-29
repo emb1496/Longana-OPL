@@ -6,6 +6,8 @@
 ************************************************************/
 #ifndef STDAFX_H
 #define STDAFX_H
+
+// all needed includes for the file
 #include <stack>
 #include <map>
 #include <queue>

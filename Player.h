@@ -12,28 +12,46 @@ using namespace std;
 class Player
 {
 public:
-	virtual bool is_human()=0;
+
+	// pure virtual function is human
+	virtual bool is_human() =0;
+
+	// adds up the pips
 	int make_a_num();
+
+	// does the player have the tile
 	bool has_tile(Tile center);
-	int get_hand_size(Hand* a_hand);
-	void add_to_score(int num);
-	int get_score();
-	void set_passed(bool passed);
-	bool get_passed();
-	void fill_hand(stack <Tile> pile);
+
+	// get the size of the hand
+	inline int get_hand_size(Hand* the_hand) { return the_hand->size(*the_hand->get_hand()); }
+
+	// add to player score
+	inline void add_to_score(int num) { score += num; }
+
+	// return player score
+	inline int get_score() { return score; }
+
+	// fill hand with a stack of tiles
+	inline void fill_hand(stack<Tile> pile) { a_hand->fill_hand(pile); }
+
+	// constructor and destructor
 	Player();
-	Hand* get_hand();
+	~Player();
+
+	// return Hand*
+	inline Hand* get_hand() { return a_hand; }
+
+	// remove the tile a_tile from the hand
 	void remove_tile(Tile a_tile);
-	void set_player_move(bool move);
-	bool get_player_move();
+
+	// set and get player move
+	inline void set_player_move(bool move) { player_move = move; }
+	inline bool get_player_move() { return player_move; }
 private:
 	bool player_move;
 	int score;
-	bool passed_last_move;
 	Hand* a_hand;
 	Hand* a_temp;
-	Tile temp;
 	int total;
 };
-
 #endif

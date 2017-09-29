@@ -11,18 +11,26 @@ using namespace std;
 class Tournament
 {
 public:
-	void who_won(Human* p1, Computer* computer);
-	inline int get_score();
-	inline int get_nummoves();
+	// inline get score
+	inline int get_score() { return score; }
+
+	// inline get nummoves
+	inline int get_nummoves() { return nummoves; }
+
+	// play the tournament
 	void play(Round* a_round, Human* p1, Computer* computer, Board* the_board, int nummoves, int score);
-	bool game_over(Human* p1, Computer* p2);
-	bool game_over(Human* p1, Computer* p2, int score);
+	
+	// check if the game is over
+	bool game_over(Human* p1, Computer* p2, int a_score);
+
+	// constructors and destructor
 	Tournament();
 	Tournament(Human* p1, Computer* computer, Board* the_board, Round* a_round, int nummoves, int score);
+	~Tournament();
 private:
+	char a_char;
 	int score;
-	std::vector<Round> t_vec;
-	Tile center;
+	Tile* center;
 	int nummoves;
 	bool readytostart;
 	string input;

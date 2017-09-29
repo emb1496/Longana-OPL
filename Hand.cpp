@@ -6,6 +6,18 @@
 ************************************************************/
 #include "Hand.h"
 
+/* *********************************************************************
+Function Name: Hand
+Purpose: Hand constructor
+Parameters:
+none
+Return Value: none
+Local Variables:
+thehand a vector of Tiles
+Algorithm:
+1.	Empty the hand
+Assistance Received: none
+********************************************************************* */
 Hand::Hand() {
 	while (!thehand.empty()) {
 		thehand.pop_back();
@@ -13,27 +25,37 @@ Hand::Hand() {
 }
 
 /* *********************************************************************
-Function Name: compute
-Purpose: To calculate the average grade in a class
+Function Name: fill_hand
+Purpose: to fill the hand
 Parameters:
-grades[], an array passed by value. It holds individual grades
-size, an integer. It refers to the number of students in the class
-Return Value: The average grade in the class, a real value
+stack of Tiles called pile to feed into the hand
+Return Value: none
 Local Variables:
-temp[], an integer array used to sort the grades
+thehand
 Algorithm:
-1) Add all the grades
-2) Divide the sum by the number of students in class to calculate the average
+1.	loop through the pile and push each tile into thehand
 Assistance Received: none
 ********************************************************************* */
-void Hand::fill_hand(std::stack <Tile> pile) {
-	int n = pile.size();
-	for (int i = 0; i < n; i++) {
+void Hand::fill_hand(stack <Tile> pile) {
+	while (!pile.empty()) {
 		thehand.push_back(pile.top());
 		pile.pop();
 	}
 }
 
+/* *********************************************************************
+Function Name: has_tile
+Purpose: to check if the hand has a tile
+Parameters:
+Tile a_tile
+Return Value: bool
+Local Variables:
+thehand
+Algorithm:
+1.	loop through the hand and compare each tile to the Tile passed in
+	if they are equal return true, otherwise return false
+Assistance Received: none
+********************************************************************* */
 bool Hand::has_tile(Tile a_tile) {
 	for (int i = 0; i < thehand.size(); i++) {
 		if (thehand.at(i).get_side_left() == a_tile.get_side_left() && thehand.at(i).get_side_right() == a_tile.get_side_right()) {
@@ -43,55 +65,16 @@ bool Hand::has_tile(Tile a_tile) {
 	return false;
 }
 
-std::vector<Tile>* Hand::get_hand() { return &thehand; }
 /* *********************************************************************
-Function Name: compute
-Purpose: To calculate the average grade in a class
+Function Name: ~Hand
+Purpose: Destructor for hand
 Parameters:
-grades[], an array passed by value. It holds individual grades
-size, an integer. It refers to the number of students in the class
-Return Value: The average grade in the class, a real value
+none
+Return Value: none
 Local Variables:
-temp[], an integer array used to sort the grades
+thehand
 Algorithm:
-1) Add all the grades
-2) Divide the sum by the number of students in class to calculate the average
-Assistance Received: none
-********************************************************************* */
-Tile Hand::at(int a) { return thehand[a]; }
-
-/* *********************************************************************
-Function Name: compute
-Purpose: To calculate the average grade in a class
-Parameters:
-grades[], an array passed by value. It holds individual grades
-size, an integer. It refers to the number of students in the class
-Return Value: The average grade in the class, a real value
-Local Variables:
-temp[], an integer array used to sort the grades
-Algorithm:
-1) Add all the grades
-2) Divide the sum by the number of students in class to calculate the average
-Assistance Received: none
-********************************************************************* */
-int Hand::size(vector<Tile> thishand) { return thishand.size(); }
-
-int Hand::size() {
-	return thehand.size();
-}
-
-/* *********************************************************************
-Function Name: compute
-Purpose: To calculate the average grade in a class
-Parameters:
-grades[], an array passed by value. It holds individual grades
-size, an integer. It refers to the number of students in the class
-Return Value: The average grade in the class, a real value
-Local Variables:
-temp[], an integer array used to sort the grades
-Algorithm:
-1) Add all the grades
-2) Divide the sum by the number of students in class to calculate the average
+1.	Empty thehand
 Assistance Received: none
 ********************************************************************* */
 Hand::~Hand()

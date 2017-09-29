@@ -18,12 +18,15 @@ using namespace std;
 
 ********************************************************************* */
 int main() {
+	// create objects for the game as well as nummoves and score
 	Human *p1 = new Human;
 	Computer *computer = new Computer;
 	Board *the_board = new Board;
 	Round *a_round = new Round;
 	int nummoves = 0, score = 0;
 	Tournament *game = new Tournament;
+
+	// call the overloaded constructor for serialization using default objects
 	Serialization *a_save = new Serialization(p1, computer, the_board, a_round, nummoves, score, game);
 	return 0;
  }
